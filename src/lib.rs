@@ -21,7 +21,7 @@ macro_rules! measure {
 
         impl AddAssign for $id {
             fn add_assign(&mut self, other: $id) {
-                $id (self.0 + other.0);
+                *self = $id (self.0 + other.0);
             }
         }
 
@@ -35,7 +35,7 @@ macro_rules! measure {
 
         impl SubAssign for $id {
             fn sub_assign(&mut self, other: $id) {
-                $id(self.0 - other.0);
+                *self = $id(self.0 - other.0);
             }
         }
 
@@ -49,7 +49,7 @@ macro_rules! measure {
 
         impl MulAssign for $id {
             fn mul_assign(&mut self, other: $id) {
-                $id(self.0 * other.0);
+                *self = $id(self.0 * other.0);
             }
         }
 
@@ -63,17 +63,43 @@ macro_rules! measure {
 
         impl DivAssign for $id {
             fn div_assign(&mut self, other: $id) {
-                $id(self.0 / other.0);
+                *self = $id(self.0 / other.0);
             }
         }
     }
 }
 
 measure!(Ohm, "Ω");
-fn main() {
-    let x = Ohm(5.0);
-    let y = Ohm(3.0);
-    let z = x / y;
-    println!("{} {}", x - y, z)
 
+#[cfg(test)]
+mod tests {
+    use crate::Ohm;
+
+    #[test]
+    fn ohm_eq_ohm() {
+        assert_eq!(Ohm(5.0).0, 5.0)
+    }
+
+    #[test]
+    fn ohm_add() {
+        assert_eq!(Ohm(5.0) + Ohm(3.0), Ohm(8.0))
+    }
+
+    #[test]
+    fn ohm_add_neg() {
+        assert_eq!(Ohm(-5.0) + Ohm(3.0), Ohm(-2.0))
+    }
+    #[test]
+    fn ohm_add_assign() {
+        let mut test_value = Ohm(5.0);
+        test_value += Ohm(3.0);
+        assert_eq!(test_value, Ohm(8.0))
+    }
+
+    #[test]
+    fn ohm_add_assign_neg() {
+        let mut test_value = Ohm(-5.0);
+        test_value += Ohm(3.0);
+        assert_eq!(test_value, Ohm(-2.0))
+    }
 }
