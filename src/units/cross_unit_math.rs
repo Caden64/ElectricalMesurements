@@ -1,7 +1,7 @@
 use std::ops::{Div, Mul};
-use crate::units::Amp::Amp;
-use crate::units::Ohm::Ohm;
-use crate::units::Volt::Volt;
+use crate::units::amp::Amp;
+use crate::units::ohm::Ohm;
+use crate::units::volt::Volt;
 
 // Ohm
 

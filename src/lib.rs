@@ -1,8 +1,8 @@
 mod units;
 
-use units::Ohm::Ohm;
-use units::Amp::Amp;
-use units::Volt::Volt;
+use units::ohm::Ohm;
+use units::amp::Amp;
+use units::volt::Volt;
 
 #[cfg(test)]
 mod tests {
