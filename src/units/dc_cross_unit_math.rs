@@ -1,5 +1,7 @@
 use std::ops::{Div, Mul};
 use crate::units::amp::Amp;
+use crate::units::farad::Farad;
+use crate::units::hertz::Hertz;
 use crate::units::ohm::Ohm;
 use crate::units::volt::Volt;
 
@@ -10,7 +12,7 @@ impl Mul<Volt> for Ohm {
     type Output = Amp;
 
     fn mul(self, other: Volt) -> Amp {
-        Amp::new(other.value / self.value)
+        Amp::new(other.value * self.value)
     }
 }
 
@@ -39,7 +41,7 @@ impl Mul<Ohm> for Volt {
     type Output = Amp;
 
     fn mul(self, other: Ohm) -> Amp {
-        Amp::new(self.value / other.value)
+        Amp::new(self.value * other.value)
     }
 }
 // Volt * Amp = Ohm
@@ -47,7 +49,7 @@ impl Mul<Amp> for Volt {
     type Output = Ohm;
 
     fn mul(self, other: Amp) -> Ohm {
-        Ohm::new(self.value / other.value)
+        Ohm::new(self.value * other.value)
     }
 }
 // Amp
@@ -66,7 +68,7 @@ impl Mul<Volt> for Amp {
     type Output = Ohm;
 
     fn mul(self, other: Volt) -> Ohm {
-        Ohm::new(other.value / self.value)
+        Ohm::new(other.value * self.value)
     }
 }
 
@@ -78,6 +80,8 @@ impl Div<Ohm> for Volt {
         Amp::new(self.value / other.value)
     }
 }
+
+
 
 #[cfg(test)]
 mod tests {
@@ -97,4 +101,15 @@ mod tests {
     fn ohm_eq_volt_div_amp() {
         assert_eq!(Ohm::new(5.0), Volt::new(5.0) / Amp::new(1.0))
     }
+
+    #[test]
+    fn ohm_eq_volt_mul_amp() {
+        assert_eq!(Ohm::new(5.0), Volt::new(5.0) * Amp::new(1.0))
+    }
+
+    #[test]
+    fn ohm_eq_amp_mul_volt() {
+        assert_eq!(Ohm::new(5.0), Amp::new(5.0) * Volt::new(1.0))
+    }
+
 }

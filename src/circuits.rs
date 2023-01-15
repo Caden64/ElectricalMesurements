@@ -1,4 +1,5 @@
-pub(crate) mod dc_circuit;
-pub(crate) mod dc_math;
-mod dc_series;
-mod dc_parallel;
+pub mod dc_circuit;
+pub mod dc_math;
+pub mod dc_series;
+pub mod dc_parallel;
+pub mod ac_math;
