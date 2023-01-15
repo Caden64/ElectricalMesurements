@@ -1,5 +1,5 @@
 use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign, Rem, RemAssign};
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Volt {
     pub value: f64,
 }
@@ -77,5 +77,135 @@ impl Rem<Volt> for Volt {
 impl RemAssign<Volt> for Volt {
     fn rem_assign(&mut self, other: Volt) {
         *self = Volt::new(self.value % other.value);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn volts_eq_volts() {
+        assert_eq!(Volt::new(5.0).value, 5.0)
+    }
+
+    #[test]
+    fn volts_add() {
+        assert_eq!(Volt::new(5.0) + Volt::new(3.0), Volt::new(8.0))
+    }
+
+    #[test]
+    fn volts_add_neg() {
+        assert_eq!(Volt::new(-5.0) + Volt::new(3.0), Volt::new(-2.0))
+    }
+
+    #[test]
+    fn volts_add_assign() {
+        let mut test_value = Volt::new(5.0);
+        test_value += Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(8.0))
+    }
+
+    #[test]
+    fn volts_add_assign_neg() {
+        let mut test_value = Volt::new(-5.0);
+        test_value += Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(-2.0))
+    }
+
+    #[test]
+    fn volts_sub() {
+        assert_eq!(Volt::new(5.0) - Volt::new(3.0), Volt::new(2.0))
+    }
+
+    #[test]
+    fn volts_sub_neg() {
+        assert_eq!(Volt::new(-5.0) - Volt::new(3.0), Volt::new(-8.0))
+    }
+
+    #[test]
+    fn volts_sub_assign() {
+        let mut test_value = Volt::new(5.0);
+        test_value -= Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(2.0))
+    }
+
+    #[test]
+    fn volts_sub_assign_neg() {
+        let mut test_value = Volt::new(-5.0);
+        test_value -= Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(-8.0))
+    }
+
+    #[test]
+    fn volts_mul() {
+        assert_eq!(Volt::new(5.0) * Volt::new(3.0), Volt::new(15.0))
+    }
+
+    #[test]
+    fn volts_mul_neg() {
+        assert_eq!(Volt::new(-5.0) * Volt::new(3.0), Volt::new(-15.0))
+    }
+
+    #[test]
+    fn volts_mul_assign() {
+        let mut test_value = Volt::new(5.0);
+        test_value *= Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(15.0))
+    }
+
+    #[test]
+    fn volts_mul_assign_neg() {
+        let mut test_value = Volt::new(-5.0);
+        test_value *= Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(-15.0))
+    }
+
+    #[test]
+    fn volts_div() {
+        assert_eq!(Volt::new(5.0) / Volt::new(3.0), Volt::new(5.0 / 3.0))
+    }
+
+    #[test]
+    fn volts_div_neg() {
+        assert_eq!(Volt::new(-5.0) / Volt::new(3.0), Volt::new(-5.0 / 3.0))
+    }
+
+    #[test]
+    fn volts_div_assign() {
+        let mut test_value = Volt::new(5.0);
+        test_value /= Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(5.0 / 3.0))
+    }
+
+    #[test]
+    fn volts_div_assign_neg() {
+        let mut test_value = Volt::new(-5.0);
+        test_value /= Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(-5.0 / 3.0))
+    }
+
+    #[test]
+    fn volts_rem() {
+        assert_eq!(Volt::new(5.0) % Volt::new(3.0), Volt::new(2.0))
+    }
+
+    #[test]
+    fn volts_rem_neg() {
+        assert_eq!(Volt::new(-5.0) % Volt::new(3.0), Volt::new(-2.0))
+    }
+
+    #[test]
+    fn volts_rem_assign() {
+        let mut test_value = Volt::new(5.0);
+        test_value %= Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(2.0))
+    }
+
+    #[test]
+    fn volts_rem_assign_neg() {
+        let mut test_value = Volt::new(-5.0);
+        test_value %= Volt::new(3.0);
+        assert_eq!(test_value, Volt::new(-2.0))
     }
 }

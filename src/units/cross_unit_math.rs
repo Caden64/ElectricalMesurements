@@ -78,3 +78,23 @@ impl Div<Ohm> for Volt {
         Amp::new(self.value / other.value)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn amp_eq_volt_div_ohm() {
+        assert_eq!(Amp::new(5.0), Volt::new(5.0) / Ohm::new(1.0))
+    }
+
+    #[test]
+    fn volt_eq_amp_mul_ohm() {
+        assert_eq!(Volt::new(5.0), Amp::new(5.0) * Ohm::new(1.0))
+    }
+
+    #[test]
+    fn ohm_eq_volt_div_amp() {
+        assert_eq!(Ohm::new(5.0), Volt::new(5.0) / Amp::new(1.0))
+    }
+}
