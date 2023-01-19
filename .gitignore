@@ -4,3 +4,5 @@
 .idea/modules.xml
 *.xml
 *.lock
+/.idea/.gitignore
+/.idea/ElectricalMesurements.iml
