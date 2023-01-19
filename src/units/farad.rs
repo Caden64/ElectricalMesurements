@@ -98,6 +98,13 @@ mod tests {
     }
 
     #[test]
+    fn micro_farad_eq_farad() {
+        let a = Farad::new_microfarad(1.0);
+        let b = Farad::new(1e-6);
+        assert_eq!(a, b);
+    }
+
+    #[test]
     fn farad_times_farad() {
         let a = Farad::new(1.0);
         let b = Farad::new(2.0);

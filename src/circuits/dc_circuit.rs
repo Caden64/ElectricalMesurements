@@ -1,4 +1,3 @@
-use std::env::current_exe;
 use crate::circuits::dc_math::{give_amp, give_voltage};
 use crate::circuits::dc_parallel::Parallel;
 use crate::units::amp::Amp;
@@ -44,21 +43,7 @@ impl Circuit {
         total_resistance
     }
 
-    pub fn total_amp(&self) -> Amp {
-        give_amp(self.input_voltage, self.total_resistance())
-    }
 
-    pub fn index_ohm(&self, index: usize) -> Ohm {
-        for (i, step) in self.steps.iter().enumerate() {
-            if i == index {
-                return match step {
-                    CircuitSteps::Series(series) => series.total_resistance(),
-                    CircuitSteps::Parallel(parallel) => parallel.total_resistance(),
-                }
-            }
-        }
-        Ohm::new(0.0)
-    }
 
     pub fn index_amp(&self, index: usize) -> Amp {
         let resistance = &self.index_ohm(index);
