@@ -2,7 +2,10 @@
 name = "electrical_mesurements"
 version = "0.1.0"
 edition = "2021"
-
+license = "ISC"
+description = "Electrical measurements"
+repository = "https://github.com/winnietthepooh/ElectricalMesurements"
+readme = "README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
