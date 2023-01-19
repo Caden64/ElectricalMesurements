@@ -43,31 +43,6 @@ impl Circuit {
         total_resistance
     }
 
-
-
-    pub fn index_amp(&self, index: usize) -> Amp {
-        let resistance = &self.index_ohm(index);
-        if resistance != &Ohm::new(0.0) {
-            return give_amp(self.input_voltage, *resistance)
-        }
-        Amp::new(0.0)
-    }
-
-    pub fn index_voltage(&self, index: usize) -> Volt {
-        let resistance = self.index_ohm(index);
-        if resistance != Ohm::new(0.0) && index < self.steps.len(){
-            return match &self.steps[index] {
-                CircuitSteps::Series(s) => {
-                    give_voltage(self.index_amp(index), s.total_resistance())
-                },
-                CircuitSteps::Parallel(p) => {
-                    give_voltage(self.index_amp(index), p.total_resistance())
-                },
-            }
-        }
-        Volt::new(0.0)
-    }
-
     pub fn index_sub_ohm(&self, index: usize, sub_index: usize, left_side: bool) -> Ohm {
         if index < self.steps.len() {
             return match &self.steps[index] {
