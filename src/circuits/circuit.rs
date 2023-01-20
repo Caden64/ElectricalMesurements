@@ -1,6 +1,7 @@
 use crate::circuits::components::Components;
 use crate::circuits::parallel::UniParallel;
 use crate::circuits::series::UniSeries;
+use crate::units::volt::Volt;
 
 #[derive(PartialEq, Debug, Clone)]
 pub enum CircuitSteps {
@@ -26,6 +27,19 @@ impl Circuit {
         Circuit {
             steps: vec![CircuitSteps::Parallel(component)],
         }
+    }
+
+    pub fn new_voltage(voltage: Volt) -> Circuit {
+        let steps = vec![CircuitSteps::Series(UniSeries::new(Components::from_voltage(voltage)))];
+        Circuit { steps }
+    }
+
+    pub fn append_series(&mut self, component: UniSeries) {
+        self.steps.push(CircuitSteps::Series(component));
+    }
+
+    pub fn append_parallel(&mut self, component: UniParallel) {
+        self.steps.push(CircuitSteps::Parallel(component));
     }
 }
 
