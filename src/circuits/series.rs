@@ -1,4 +1,5 @@
 use crate::circuits::components::Components;
+use crate::units::amp::Amp;
 use crate::units::farad::Farad;
 use crate::units::henry::Henry;
 use crate::units::ohm::Ohm;
@@ -16,7 +17,7 @@ impl Series {
     pub fn add(&mut self, component: Components) {
         self.components.push(component)
     }
-    pub fn capacitance(&self) -> Farad {
+    pub fn total_capacitance(&self) -> Farad {
         let mut capacitors = vec![];
         for components in &self.components {
             match components {
@@ -65,6 +66,30 @@ impl Series {
         let component = Components::new_voltage(voltage_value);
         Series::new(component)
     }
+    pub fn total_resistance(&self) -> Ohm {
+        let mut total = Ohm::new(0.0);
+        for resistor in &self.components {
+            match resistor {
+                Components::Resistor(ohm) => {
+                    total += *ohm
+                }
+                _ => {}
+            }
+        }
+
+        total
+    }
+    pub fn total_amps(&self) -> Amp {
+        let total = Amp::new(0.0);
+        for component in &self.components {
+            match component {
+                Components::Voltage(volt) => return *volt / self.total_resistance(),
+                _ => {}
+            }
+        }
+
+        total
+    }
 }
 
 #[cfg(test)]
@@ -77,6 +102,18 @@ mod tests {
 
     #[test]
     fn test_new() {
+        let resistor = Series::from_resistor(Ohm::new(1.0));
+        let capacitor = Series::from_capacitor( Farad::new(1.0));
+        let inductor = Series::from_inductor(Henry::new(1.0));
+        let voltage = Series::from_voltage(Volt::new(1.0));
+        assert_eq!(resistor, Series {components: vec![Components::Resistor(Ohm::new(1.0))]});
+        assert_eq!(capacitor, Series {components: vec![Components::Capacitor(Farad::new(1.0))]});
+        assert_eq!(inductor, Series {components: vec![Components::Inductor(Henry::new(1.0))]});
+        assert_eq!(voltage, Series {components: vec![Components::Voltage(Volt::new(1.0))]});
+    }
+
+    #[test]
+    fn test_from() {
         let resistor = Series::new(Components::from_resistor(Ohm::new(1.0)));
         let capacitor = Series::new(Components::from_capacitor(Farad::new(1.0)));
         let inductor = Series::new(Components::from_inductor(Henry::new(1.0)));
@@ -86,4 +123,33 @@ mod tests {
         assert_eq!(inductor, Series {components: vec![Components::Inductor(Henry::new(1.0))]});
         assert_eq!(voltage, Series {components: vec![Components::Voltage(Volt::new(1.0))]});
     }
+
+    #[test]
+    fn test_add() {
+        let mut series = Series::new_voltage(5.0);
+        series.add(Components::new_resistor(3.0));
+        assert_eq!(series, Series { components: vec![Components::new_voltage(5.0), Components::new_resistor(3.0)]})
+    }
+
+    #[test]
+    fn test_capacitance() {
+        let mut series: Series = Series::from_capacitor(Farad::new_microfarad(0.27));
+        series.add(Components::Capacitor(Farad::new_microfarad(0.27)));
+        assert_eq!(series.total_capacitance(), Farad::new_microfarad(0.135))
+    }
+    #[test]
+    fn total_resistance() {
+        let mut series = Series::new_resistor(5.0);
+        series.add(Components::new_resistor(3.0));
+        assert_eq!(series.total_resistance(), Ohm::new(8.0))
+    }
+
+    #[test]
+    fn total_amps() {
+        let mut series = Series::new_voltage(5.0);
+        series.add(Components::new_resistor(3.0));
+        series.add(Components::new_resistor(5.0));
+        assert_eq!(series.total_amps(), Amp::new(0.625))
+    }
+
 }

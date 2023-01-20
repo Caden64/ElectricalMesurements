@@ -1,6 +1,8 @@
 use crate::circuits::components::Components;
 use crate::circuits::series::Series;
+use crate::units::amp::Amp;
 use crate::units::farad::Farad;
+use crate::units::ohm::Ohm;
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct Parallel {
@@ -39,6 +41,44 @@ impl Parallel {
         }
 
         all_capacitors
+    }
+    pub fn total_resistance(&self) -> Ohm {
+        let mut total = Ohm::new(0.0);
+        for series in &self.side1 {
+            for component in &series.components {
+                match component {
+                    Components::Resistor(ohm) => {
+                        total += ohm.reciprocal()
+                    }
+                    _ => {}
+                }
+            }
+        }
+
+        for series in &self.side2 {
+            for component in &series.components {
+                match component {
+                    Components::Resistor(ohm) => {
+                        total += ohm.reciprocal()
+                    }
+                    _ => {}
+                }
+            }
+        }
+
+        total.reciprocal()
+    }
+    pub fn total_amps(&self) -> Amp {
+        let mut total = Amp::new(0.0);
+        for x in &self.side1 {
+            total += x.total_amps()
+        }
+
+        for x in &self.side2 {
+            total += x.total_amps()
+        }
+
+        total
     }
 }
 
