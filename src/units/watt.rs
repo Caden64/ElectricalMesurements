@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
 
 #[derive(PartialEq, Debug, Copy, Clone)]
@@ -93,6 +94,12 @@ impl RemAssign<Watt> for Watt {
     }
 }
 
+impl fmt::Display for Watt {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:.} W", self.value)
+    }
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -181,6 +188,12 @@ mod tests {
         let watt2 = super::Watt::new(1.0);
         watt1 %= watt2;
         assert_eq!(watt1, super::Watt::new(0.0));
+    }
+
+    #[test]
+    fn watt_display() {
+        let watt = super::Watt::new(1.0);
+        assert_eq!(format!("{}", watt), "1 W");
     }
 
 }

@@ -21,10 +21,10 @@ mod tests {
 
     #[test]
     fn test_new() {
-        let resistor = UniSeries::new(Components::new_resistor(Ohm::new(1.0)));
-        let capacitor = UniSeries::new(Components::new_capacitor(Farad::new(1.0)));
-        let inductor = UniSeries::new(Components::new_inductor(Henry::new(1.0)));
-        let voltage = UniSeries::new(Components::new_voltage(Volt::new(1.0)));
+        let resistor = UniSeries::new(Components::from_resistor(Ohm::new(1.0)));
+        let capacitor = UniSeries::new(Components::from_capacitor(Farad::new(1.0)));
+        let inductor = UniSeries::new(Components::from_inductor(Henry::new(1.0)));
+        let voltage = UniSeries::new(Components::from_voltage(Volt::new(1.0)));
         assert_eq!(resistor, UniSeries::Component(Components::Resistor(Ohm::new(1.0))));
         assert_eq!(capacitor, UniSeries::Component(Components::Capacitor(Farad::new(1.0))));
         assert_eq!(inductor, UniSeries::Component(Components::Inductor(Henry::new(1.0))));

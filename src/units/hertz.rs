@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign, Rem, RemAssign};
 
 
@@ -91,6 +92,12 @@ impl Rem<Hertz> for Hertz {
 impl RemAssign<Hertz> for Hertz {
     fn rem_assign(&mut self, other: Hertz) {
         *self = Hertz::new(self.value % other.value);
+    }
+}
+
+impl fmt::Display for Hertz {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:.} Hz", self.value)
     }
 }
 
@@ -210,6 +217,12 @@ mod tests {
         let c = Hertz::new(1.0);
         a %= b;
         assert_eq!(a, c);
+    }
+
+    #[test]
+    fn hertz_display() {
+        let a = Hertz::new(1.0);
+        assert_eq!(format!("{}", a), "1 Hz");
     }
 
 }

@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
 
 #[derive(PartialEq, Debug, Copy, Clone)]
@@ -78,6 +79,12 @@ impl Rem<Henry> for Henry {
 impl RemAssign<Henry> for Henry {
     fn rem_assign(&mut self, other: Henry) {
         *self = Henry::new(self.value % other.value);
+    }
+}
+
+impl fmt::Display for Henry {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:.} H", self.value)
     }
 }
 
@@ -163,5 +170,11 @@ mod tests {
         let b = Henry::new(2.0);
         a %= b;
         assert_eq!(a.value, 1.0);
+    }
+
+    #[test]
+    fn display() {
+        let a = Henry::new(1.0);
+        assert_eq!(format!("{}", a), "1 H");
     }
 }

@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign, Rem, RemAssign};
 #[derive(PartialEq, Debug, Copy, Clone)]
 
@@ -80,6 +81,13 @@ impl RemAssign<Amp> for Amp {
         *self = Amp::new(self.value % other.value);
     }
 }
+
+impl fmt::Display for Amp {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:.} A", self.value)
+    }
+}
+
 
 #[cfg(test)]
 mod test {

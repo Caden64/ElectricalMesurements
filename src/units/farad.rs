@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign, Rem, RemAssign};
 
 #[derive(PartialEq, Debug, Copy, Clone)]
@@ -82,6 +83,12 @@ impl Rem<Farad> for Farad {
 impl RemAssign<Farad> for Farad {
     fn rem_assign(&mut self, other: Farad) {
         *self = Farad::new(self.value % other.value);
+    }
+}
+
+impl fmt::Display for Farad {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:.} F", self.value)
     }
 }
 
@@ -179,4 +186,9 @@ mod tests {
         assert_eq!(a, Farad::new(1.0));
     }
 
+    #[test]
+    fn farad_display() {
+        let a = Farad::new(1.0);
+        assert_eq!(format!("{}", a), "1 F");
+    }
 }

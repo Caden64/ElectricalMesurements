@@ -14,8 +14,18 @@ pub struct Circuit {
 }
 
 impl Circuit {
-    pub fn new(steps: Vec<CircuitSteps>) -> Circuit {
+    pub fn from(steps: Vec<CircuitSteps>) -> Circuit {
         Circuit { steps }
+    }
+    pub fn new_series(component: UniSeries) -> Circuit {
+        Circuit {
+            steps: vec![CircuitSteps::Series(component)],
+        }
+    }
+    pub fn new_parallel(component: UniParallel) -> Circuit {
+        Circuit {
+            steps: vec![CircuitSteps::Parallel(component)],
+        }
     }
 }
 
@@ -35,14 +45,14 @@ mod tests {
 
     #[test]
     fn test_new() {
-        let series = CircuitSteps::new_series(Components::new_resistor(Ohm::new(1.0)));
+        let series = CircuitSteps::new_series(Components::from_resistor(Ohm::new(1.0)));
         let parallel = CircuitSteps::new_parallel(vec![]);
-        let circuit = Circuit::new(vec![series, parallel]);
+        let circuit = Circuit::from(vec![series, parallel]);
         assert_eq!(
             circuit,
             Circuit {
                 steps: vec![
-                    CircuitSteps::Series(UniSeries::new(Components::new_resistor(Ohm::new(1.0)))),
+                    CircuitSteps::Series(UniSeries::new(Components::from_resistor(Ohm::new(1.0)))),
                     CircuitSteps::Parallel(UniParallel::new(vec![]))
                 ]
             }

@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign, Rem, RemAssign};
 #[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Ohm {
@@ -79,6 +80,14 @@ impl RemAssign<Ohm> for Ohm {
         *self = Ohm::new(self.value % other.value);
     }
 }
+
+impl fmt::Display for Ohm {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:.} Ω", self.value)
+    }
+}
+
+
 
 #[cfg(test)]
 mod tests {
@@ -207,5 +216,10 @@ mod tests {
         let mut test_value = Ohm::new(-5.0);
         test_value %= Ohm::new(3.0);
         assert_eq!(test_value, Ohm::new(-2.0))
+    }
+
+    #[test]
+    fn ohms_display() {
+        assert_eq!(format!("{}", Ohm::new(5.0)), "5 Ω")
     }
 }

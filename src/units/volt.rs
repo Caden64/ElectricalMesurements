@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign, Rem, RemAssign};
 #[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Volt {
@@ -77,6 +78,12 @@ impl Rem<Volt> for Volt {
 impl RemAssign<Volt> for Volt {
     fn rem_assign(&mut self, other: Volt) {
         *self = Volt::new(self.value % other.value);
+    }
+}
+
+impl fmt::Display for Volt {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:.} V", self.value)
     }
 }
 
@@ -208,4 +215,10 @@ mod tests {
         test_value %= Volt::new(3.0);
         assert_eq!(test_value, Volt::new(-2.0))
     }
+
+    #[test]
+    fn volts_display() {
+        assert_eq!(format!("{}", Volt::new(5.0)), "5 V")
+    }
+
 }
