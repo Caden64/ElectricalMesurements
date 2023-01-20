@@ -1,24 +1,26 @@
-use crate::circuits::series::UniSeries;
+use crate::circuits::series::Series;
 
 #[derive(PartialEq, Debug, Clone)]
-pub struct UniParallel {
-    pub components: Vec<UniSeries>,
+pub struct Parallel {
+    pub side1: Vec<Series>,
+    pub side2: Vec<Series>
 }
 
-impl UniParallel {
-    pub fn new(components: Vec<UniSeries>) -> UniParallel {
-        UniParallel { components }
+impl Parallel {
+    pub fn new(side1: Vec<Series>, side2: Vec<Series>) -> Parallel {
+        Parallel { side1, side2 }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::circuits::parallel::UniParallel;
+    use crate::circuits::parallel::Parallel;
 
     #[test]
     fn test_new() {
-        let components = vec![];
-        let parallel = UniParallel::new(components);
-        assert_eq!(parallel, UniParallel { components: vec![] });
+        let side1 = vec![];
+        let side2 = vec![];
+        let parallel = Parallel::new(side1, side2);
+        assert_eq!(parallel, Parallel { side1: vec![], side2: vec![] });
     }
 }
