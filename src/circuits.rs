@@ -1,5 +1,4 @@
-pub mod dc_circuit;
-pub mod dc_math;
-pub mod dc_series;
-pub mod dc_parallel;
-pub mod ac_circuit;
+pub mod circuit;
+pub mod components;
+pub mod series;
+pub mod parallel;

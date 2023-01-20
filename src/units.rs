@@ -6,6 +6,5 @@ pub mod siemens;
 pub mod farad;
 pub mod hertz;
 pub mod seconds;
-pub mod ac_cross_unit_math;
 pub mod henry;
 pub mod watt;
