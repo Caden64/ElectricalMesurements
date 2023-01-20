@@ -10,7 +10,7 @@ impl Amp {
     pub fn new(value: f64) -> Self {
         Self { value }
     }
-    pub fn reciprical(&self) -> Self {
+    pub fn reciprocal(&self) -> Self {
         Self { value: 1.0 / self.value }
     }
 }

@@ -15,7 +15,7 @@ impl Farad {
         Self { value: value * 1e-6 }
     }
 
-    pub fn reciprical(&self) -> Self {
+    pub fn reciprocal(&self) -> Self {
         Self { value: 1.0 / self.value }
     }
 }
@@ -194,5 +194,13 @@ mod tests {
     fn farad_display() {
         let a = Farad::new(1.0);
         assert_eq!(format!("{}", a), "1 F");
+    }
+
+    #[test]
+    fn farad_reciprocal() {
+        let a = Farad::new_microfarad(0.27);
+        let b = Farad::new_microfarad(0.27);
+        let ct = (a.reciprocal() + b.reciprocal()).reciprocal();
+        assert_eq!(Farad::new_microfarad(0.135), ct);
     }
 }

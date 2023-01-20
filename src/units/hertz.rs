@@ -24,7 +24,7 @@ impl Hertz {
         Self { value: value * 1e9 }
     }
 
-    pub fn reciprical(&self) -> Self {
+    pub fn reciprocal(&self) -> Self {
         Self { value: 1.0 / self.value }
     }
 }
