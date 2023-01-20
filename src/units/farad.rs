@@ -14,6 +14,10 @@ impl Farad {
     pub fn new_microfarad(value: f64) -> Self {
         Self { value: value * 1e-6 }
     }
+
+    pub fn reciprical(&self) -> Self {
+        Self { value: 1.0 / self.value }
+    }
 }
 
 impl Mul<Farad> for Farad {

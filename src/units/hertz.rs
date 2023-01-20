@@ -23,6 +23,10 @@ impl Hertz {
     pub fn new_gigahertz(value: f64) -> Self {
         Self { value: value * 1e9 }
     }
+
+    pub fn reciprical(&self) -> Self {
+        Self { value: 1.0 / self.value }
+    }
 }
 
 impl Mul<Hertz> for Hertz {
@@ -30,6 +34,14 @@ impl Mul<Hertz> for Hertz {
 
     fn mul(self, other: Hertz) -> Hertz {
         Hertz::new(self.value * other.value)
+    }
+}
+
+impl Mul<Hertz> for f64 {
+    type Output = Hertz;
+
+    fn mul(self, other: Hertz) -> Hertz {
+        Hertz::new(self * other.value)
     }
 }
 

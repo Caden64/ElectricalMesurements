@@ -1,5 +1,7 @@
 use std::ops::{Div, Mul};
 use crate::units::amp::Amp;
+use crate::units::farad::Farad;
+use crate::units::hertz::Hertz;
 use crate::units::ohm::Ohm;
 use crate::units::volt::Volt;
 
@@ -79,7 +81,19 @@ impl Div<Ohm> for Volt {
     }
 }
 
+impl Mul<Farad> for Hertz {
+    type Output = Ohm;
 
+    fn mul(self, other: Farad) -> Ohm {
+        Ohm::new(self.value * other.value)
+    }
+}
+
+// capacitive resistance
+
+pub fn capacitive_resistance(capacitance: Farad, frequency: Hertz) -> Ohm {
+    1.0 / (2.0 * std::f64::consts::PI * frequency * capacitance)
+}
 
 #[cfg(test)]
 mod tests {
@@ -108,6 +122,13 @@ mod tests {
     #[test]
     fn ohm_eq_amp_mul_volt() {
         assert_eq!(Ohm::new(5.0), Amp::new(5.0) * Volt::new(1.0))
+    }
+
+    #[test]
+    fn test_capacitive_resistance() {
+        let capacitance = Farad::new_microfarad(0.135);
+        let frequency = Hertz::new(200.0);
+        assert_eq!(Ohm::new(5895.0), Ohm::new(capacitive_resistance(capacitance, frequency).value.round()))
     }
 
 }

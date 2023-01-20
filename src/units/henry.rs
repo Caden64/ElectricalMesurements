@@ -10,6 +10,10 @@ impl Henry {
     pub fn new(value: f64) -> Self {
         Self { value }
     }
+
+    pub fn reciprical(&self) -> Self {
+        Self { value: 1.0 / self.value }
+    }
 }
 
 impl Mul<Henry> for Henry {

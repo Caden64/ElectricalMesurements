@@ -22,6 +22,10 @@ impl Watt {
     pub fn new_gigawatt(value: f64) -> Self {
         Self { value: value * 1e9 }
     }
+
+    pub fn reciprical(&self) -> Self {
+        Self { value: 1.0 / self.value }
+    }
 }
 
 impl Mul<Watt> for Watt {

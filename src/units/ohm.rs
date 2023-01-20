@@ -9,6 +9,10 @@ impl Ohm {
     pub fn new(value: f64) -> Self {
         Self { value }
     }
+
+    pub fn reciprical(&self) -> Self {
+        Self { value: 1.0 / self.value }
+    }
 }
 
 impl Mul<Ohm> for Ohm {
@@ -46,7 +50,13 @@ impl Add<Ohm> for Ohm {
         Ohm::new(self.value + other.value)
     }
 }
+impl Div<Ohm> for f64 {
+    type Output = Ohm;
 
+    fn div(self, other: Ohm) -> Self::Output {
+        Ohm::new(self / other.value)
+    }
+}
 impl AddAssign<Ohm> for Ohm {
     fn add_assign(&mut self, other: Ohm) {
         *self = Ohm::new(self.value + other.value);
