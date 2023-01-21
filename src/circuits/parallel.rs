@@ -20,22 +20,16 @@ impl Parallel {
 
         for capacitors in &self.side1 {
             for capacitor in &capacitors.components {
-                match capacitor {
-                    Components::Capacitor(farad) => {
-                        all_capacitors += *farad;
-                    },
-                    _ => {}
+                if let Components::Capacitor(farad) = capacitor {
+                    all_capacitors += *farad;
                 }
             }
         }
 
         for capacitors in &self.side2 {
             for capacitor in &capacitors.components {
-                match capacitor {
-                    Components::Capacitor(farad) => {
-                        all_capacitors += *farad;
-                    },
-                    _ => {}
+                if let Components::Capacitor(farad) = capacitor {
+                    all_capacitors += *farad;
                 }
             }
         }
@@ -46,22 +40,16 @@ impl Parallel {
         let mut total = Ohm::new(0.0);
         for series in &self.side1 {
             for component in &series.components {
-                match component {
-                    Components::Resistor(ohm) => {
-                        total += ohm.reciprocal()
-                    }
-                    _ => {}
+                if let Components::Resistor(ohm) = component {
+                    total += ohm.reciprocal()
                 }
             }
         }
 
         for series in &self.side2 {
             for component in &series.components {
-                match component {
-                    Components::Resistor(ohm) => {
-                        total += ohm.reciprocal()
-                    }
-                    _ => {}
+                if let Components::Resistor(ohm) = component {
+                    total += ohm.reciprocal()
                 }
             }
         }

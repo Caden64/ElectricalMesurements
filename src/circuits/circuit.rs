@@ -1,6 +1,7 @@
 use crate::circuits::components::Components;
 use crate::circuits::parallel::Parallel;
 use crate::circuits::series::Series;
+use crate::units::ohm::Ohm;
 use crate::units::volt::Volt;
 
 #[derive(PartialEq, Debug, Clone)]
@@ -40,6 +41,21 @@ impl Circuit {
 
     pub fn append_parallel(&mut self, component: Parallel) {
         self.steps.push(CircuitSteps::Parallel(component));
+    }
+
+    pub fn total_resistance(&self) -> Ohm {
+        let mut total = Ohm::new(0.0);
+        for step in &self.steps {
+            match step {
+                CircuitSteps::Series(series) => {
+                    total += series.total_resistance();
+                }
+                CircuitSteps::Parallel(parallel) => {
+                    total += parallel.total_resistance();
+                }
+            }
+        }
+        total
     }
 }
 

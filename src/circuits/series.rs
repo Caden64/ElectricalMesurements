@@ -69,11 +69,8 @@ impl Series {
     pub fn total_resistance(&self) -> Ohm {
         let mut total = Ohm::new(0.0);
         for resistor in &self.components {
-            match resistor {
-                Components::Resistor(ohm) => {
-                    total += *ohm
-                }
-                _ => {}
+            if let Components::Resistor(ohm) = resistor {
+                total += *ohm
             }
         }
 
@@ -82,10 +79,7 @@ impl Series {
     pub fn total_amps(&self) -> Amp {
         let total = Amp::new(0.0);
         for component in &self.components {
-            match component {
-                Components::Voltage(volt) => return *volt / self.total_resistance(),
-                _ => {}
-            }
+            if let Components::Voltage(volt) = component { return *volt / self.total_resistance() }
         }
 
         total
