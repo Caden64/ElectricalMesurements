@@ -1,6 +1,6 @@
 [package]
 name = "electrical_mesurements"
-version = "0.6.0"
+version = "1.0.0"
 edition = "2021"
 license = "ISC"
 description = "Electrical measurements"
@@ -8,7 +8,3 @@ repository = "https://github.com/winnietthepooh/ElectricalMesurements"
 readme = "README.md"
 
 [dependencies]
-
-[features]
-default_math = []
-default = ["default_math"]

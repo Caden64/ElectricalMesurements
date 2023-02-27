@@ -1,7 +1,6 @@
-use std::fmt;
-use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign, Rem, RemAssign};
-#[derive(PartialEq, Debug, Copy, Clone)]
+use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign};
 
+#[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Amp {
     pub value: f64,
 }
@@ -9,9 +8,6 @@ pub struct Amp {
 impl Amp {
     pub fn new(value: f64) -> Self {
         Self { value }
-    }
-    pub fn reciprocal(&self) -> Self {
-        Self { value: 1.0 / self.value }
     }
 }
 
@@ -23,41 +19,9 @@ impl Mul<Amp> for Amp {
     }
 }
 
-#[cfg(feature = "default_math")]
-impl Mul<Amp> for f64 {
-    type Output = Amp;
-
-    fn mul(self, other: Amp) -> Amp {
-        Amp::new(self * other.value)
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl Mul<f64> for Amp {
-    type Output = Amp;
-
-    fn mul(self, other: f64) -> Amp {
-        Amp::new(self.value * other)
-    }
-}
-
 impl MulAssign<Amp> for Amp {
     fn mul_assign(&mut self, other: Amp) {
-        *self = Amp::new(self.value * other.value);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl MulAssign<f64> for Amp {
-    fn mul_assign(&mut self, other: f64) {
-        *self = Amp::new(self.value * other);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl MulAssign<Amp> for f64 {
-    fn mul_assign(&mut self, other: Amp) {
-        *self = *self * other.value;
+        self.value *= other.value;
     }
 }
 
@@ -69,41 +33,9 @@ impl Div<Amp> for Amp {
     }
 }
 
-#[cfg(feature = "default_math")]
-impl Div<Amp> for f64 {
-    type Output = Amp;
-
-    fn div(self, other: Amp) -> Amp {
-        Amp::new(self / other.value)
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl Div<f64> for Amp {
-    type Output = Amp;
-
-    fn div(self, other: f64) -> Amp {
-        Amp::new(self.value / other)
-    }
-}
-
 impl DivAssign<Amp> for Amp {
     fn div_assign(&mut self, other: Amp) {
-        *self = Amp::new(self.value / other.value);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl DivAssign<f64> for Amp {
-    fn div_assign(&mut self, other: f64) {
-        *self = Amp::new(self.value / other);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl DivAssign<Amp> for f64 {
-    fn div_assign(&mut self, other: Amp) {
-        *self = *self / other.value;
+        self.value /= other.value;
     }
 }
 
@@ -115,41 +47,9 @@ impl Add<Amp> for Amp {
     }
 }
 
-#[cfg(feature = "default_math")]
-impl Add<Amp> for f64 {
-    type Output = Amp;
-
-    fn add(self, other: Amp) -> Amp {
-        Amp::new(self + other.value)
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl Add<f64> for Amp {
-    type Output = Amp;
-
-    fn add(self, other: f64) -> Amp {
-        Amp::new(self.value + other)
-    }
-}
-
 impl AddAssign<Amp> for Amp {
     fn add_assign(&mut self, other: Amp) {
-        *self = Amp::new(self.value + other.value);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl AddAssign<f64> for Amp {
-    fn add_assign(&mut self, other: f64) {
-        *self = Amp::new(self.value + other);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl AddAssign<Amp> for f64 {
-    fn add_assign(&mut self, other: Amp) {
-        *self = *self + other.value;
+        self.value += other.value;
     }
 }
 
@@ -161,354 +61,76 @@ impl Sub<Amp> for Amp {
     }
 }
 
-#[cfg(feature = "default_math")]
-impl Sub<Amp> for f64 {
-    type Output = Amp;
-
-    fn sub(self, other: Amp) -> Amp {
-        Amp::new(self - other.value)
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl Sub<f64> for Amp {
-    type Output = Amp;
-
-    fn sub(self, other: f64) -> Amp {
-        Amp::new(self.value - other)
-    }
-}
-
 impl SubAssign<Amp> for Amp {
     fn sub_assign(&mut self, other: Amp) {
-        *self = Amp::new(self.value - other.value);
+        self.value -= other.value;
     }
 }
 
-#[cfg(feature = "default_math")]
-impl SubAssign<f64> for Amp {
-    fn sub_assign(&mut self, other: f64) {
-        *self = Amp::new(self.value - other);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl SubAssign<Amp> for f64 {
-    fn sub_assign(&mut self, other: Amp) {
-        *self = *self - other.value;
-    }
-}
-
-impl Rem<Amp> for Amp {
-    type Output = Amp;
-
-    fn rem(self, other: Amp) -> Amp {
-        Amp::new(self.value % other.value)
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl Rem<Amp> for f64 {
-    type Output = Amp;
-
-    fn rem(self, other: Amp) -> Amp {
-        Amp::new(self % other.value)
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl Rem<f64> for Amp {
-    type Output = Amp;
-
-    fn rem(self, other: f64) -> Amp {
-        Amp::new(self.value % other)
-    }
-}
-
-impl RemAssign<Amp> for Amp {
-    fn rem_assign(&mut self, other: Amp) {
-        *self = Amp::new(self.value % other.value);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl RemAssign<f64> for Amp {
-    fn rem_assign(&mut self, other: f64) {
-        *self = Amp::new(self.value % other);
-    }
-}
-
-#[cfg(feature = "default_math")]
-impl RemAssign<Amp> for f64 {
-    fn rem_assign(&mut self, other: Amp) {
-        *self = *self % other.value;
-    }
-}
-
-impl fmt::Display for Amp {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:.} A", self.value)
-    }
-}
-
-
-#[cfg(test)]
-mod test {
+mod tests {
     use super::*;
 
-
     #[test]
-    fn amps_eq_amps() {
-        assert_eq!(Amp::new(5.0).value, 5.0)
+    fn test_mul() {
+        let a = Amp::new(1.0);
+        let b = Amp::new(2.0);
+        let c = a * b;
+        assert_eq!(c.value, 2.0);
     }
 
     #[test]
-    fn amps_add() {
-        assert_eq!(Amp::new(5.0) + Amp::new(3.0), Amp::new(8.0))
+    fn test_mul_assign() {
+        let mut a = Amp::new(1.0);
+        let b = Amp::new(2.0);
+        a *= b;
+        assert_eq!(a.value, 2.0);
     }
 
     #[test]
-    fn amps_add_neg() {
-        assert_eq!(Amp::new(-5.0) + Amp::new(3.0), Amp::new(-2.0))
+    fn test_div() {
+        let a = Amp::new(1.0);
+        let b = Amp::new(2.0);
+        let c = a / b;
+        assert_eq!(c.value, 0.5);
     }
 
     #[test]
-    fn amps_add_f64() {
-        assert_eq!(Amp::new(5.0) + 3.0, Amp::new(8.0))
+    fn test_div_assign() {
+        let mut a = Amp::new(1.0);
+        let b = Amp::new(2.0);
+        a /= b;
+        assert_eq!(a.value, 0.5);
     }
 
     #[test]
-    fn amps_add_f64_neg() {
-        assert_eq!(Amp::new(-5.0) + 3.0, Amp::new(-2.0))
+    fn test_add() {
+        let a = Amp::new(1.0);
+        let b = Amp::new(2.0);
+        let c = a + b;
+        assert_eq!(c.value, 3.0);
     }
 
     #[test]
-    fn amps_add_assign() {
-        let mut test_value = Amp::new(5.0);
-        test_value += Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(8.0))
+    fn test_add_assign() {
+        let mut a = Amp::new(1.0);
+        let b = Amp::new(2.0);
+        a += b;
+        assert_eq!(a.value, 3.0);
     }
 
     #[test]
-    fn amps_add_assign_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value += Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(-2.0))
+    fn test_sub() {
+        let a = Amp::new(1.0);
+        let b = Amp::new(2.0);
+        let c = a - b;
+        assert_eq!(c.value, -1.0);
     }
 
     #[test]
-    fn amps_add_assign_f64() {
-        let mut test_value = Amp::new(5.0);
-        test_value += 3.0;
-        assert_eq!(test_value, Amp::new(8.0))
-    }
-
-    #[test]
-    fn amps_add_assign_f64_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value += 3.0;
-        assert_eq!(test_value, Amp::new(-2.0))
-    }
-
-    #[test]
-    fn amps_sub() {
-        assert_eq!(Amp::new(5.0) - Amp::new(3.0), Amp::new(2.0))
-    }
-
-    #[test]
-    fn amps_sub_neg() {
-        assert_eq!(Amp::new(-5.0) - Amp::new(3.0), Amp::new(-8.0))
-    }
-
-    #[test]
-    fn amps_sub_f64() {
-        assert_eq!(Amp::new(5.0) - 3.0, Amp::new(2.0))
-    }
-
-    #[test]
-    fn amps_sub_f64_neg() {
-        assert_eq!(Amp::new(-5.0) - 3.0, Amp::new(-8.0))
-    }
-
-    #[test]
-    fn amps_sub_assign() {
-        let mut test_value = Amp::new(5.0);
-        test_value -= Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(2.0))
-    }
-
-    #[test]
-    fn amps_sub_assign_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value -= Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(-8.0))
-    }
-
-    #[test]
-    fn amps_sub_assign_f64() {
-        let mut test_value = Amp::new(5.0);
-        test_value -= 3.0;
-        assert_eq!(test_value, Amp::new(2.0))
-    }
-
-    #[test]
-    fn amps_sub_assign_f64_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value -= 3.0;
-        assert_eq!(test_value, Amp::new(-8.0))
-    }
-
-    #[test]
-    fn amps_mul() {
-        assert_eq!(Amp::new(5.0) * Amp::new(3.0), Amp::new(15.0))
-    }
-
-    #[test]
-    fn amps_mul_neg() {
-        assert_eq!(Amp::new(-5.0) * Amp::new(3.0), Amp::new(-15.0))
-    }
-
-    #[test]
-    fn amps_mul_f64() {
-        assert_eq!(Amp::new(5.0) * 3.0, Amp::new(15.0))
-    }
-
-    #[test]
-    fn amps_mul_f64_neg() {
-        assert_eq!(Amp::new(-5.0) * 3.0, Amp::new(-15.0))
-    }
-
-    #[test]
-    fn amps_mul_assign() {
-        let mut test_value = Amp::new(5.0);
-        test_value *= Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(15.0))
-    }
-
-    #[test]
-    fn amps_mul_assign_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value *= Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(-15.0))
-    }
-
-    #[test]
-    fn amps_mul_assign_f64() {
-        let mut test_value = Amp::new(5.0);
-        test_value *= 3.0;
-        assert_eq!(test_value, Amp::new(15.0))
-    }
-
-    #[test]
-    fn amps_mul_assign_f64_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value *= 3.0;
-        assert_eq!(test_value, Amp::new(-15.0))
-    }
-
-    #[test]
-    fn amps_div() {
-        assert_eq!(Amp::new(5.0) / Amp::new(3.0), Amp::new(5.0 / 3.0))
-    }
-
-    #[test]
-    fn amps_div_neg() {
-        assert_eq!(Amp::new(-5.0) / Amp::new(3.0), Amp::new(-5.0 / 3.0))
-    }
-
-    #[test]
-    fn amps_div_f64() {
-        assert_eq!(Amp::new(5.0) / 3.0, Amp::new(5.0 / 3.0))
-    }
-
-    #[test]
-    fn amps_div_f64_neg() {
-        assert_eq!(Amp::new(-5.0) / 3.0, Amp::new(-5.0 / 3.0))
-    }
-
-    #[test]
-    fn amps_div_assign() {
-        let mut test_value = Amp::new(5.0);
-        test_value /= Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(5.0 / 3.0))
-    }
-
-    #[test]
-    fn amps_div_assign_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value /= Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(-5.0 / 3.0))
-    }
-
-    #[test]
-    fn amps_div_assign_f64() {
-        let mut test_value = Amp::new(5.0);
-        test_value /= 3.0;
-        assert_eq!(test_value, Amp::new(5.0 / 3.0))
-    }
-
-    #[test]
-    fn amps_div_assign_f64_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value /= 3.0;
-        assert_eq!(test_value, Amp::new(-5.0 / 3.0))
-    }
-
-    #[test]
-    fn amps_rem() {
-        assert_eq!(Amp::new(5.0) % Amp::new(3.0), Amp::new(2.0))
-    }
-
-    #[test]
-    fn amps_rem_neg() {
-        assert_eq!(Amp::new(-5.0) % Amp::new(3.0), Amp::new(-2.0))
-    }
-
-    #[test]
-    fn amps_rem_f64() {
-        assert_eq!(Amp::new(5.0) % 3.0, Amp::new(2.0))
-    }
-
-    #[test]
-    fn amps_rem_f64_neg() {
-        assert_eq!(Amp::new(-5.0) % 3.0, Amp::new(-2.0))
-    }
-
-    #[test]
-    fn amps_rem_assign() {
-        let mut test_value = Amp::new(5.0);
-        test_value %= Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(2.0))
-    }
-
-    #[test]
-    fn amps_rem_assign_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value %= Amp::new(3.0);
-        assert_eq!(test_value, Amp::new(-2.0))
-    }
-
-    #[test]
-    fn amps_rem_assign_f64() {
-        let mut test_value = Amp::new(5.0);
-        test_value %= 3.0;
-        assert_eq!(test_value, Amp::new(2.0))
-    }
-
-    #[test]
-    fn amps_rem_assign_f64_neg() {
-        let mut test_value = Amp::new(-5.0);
-        test_value %= 3.0;
-        assert_eq!(test_value, Amp::new(-2.0))
-    }
-
-    #[test]
-    fn amps_display() {
-        assert_eq!(format!("{}", Amp::new(5.0)), "5 A")
-    }
-
-    #[test]
-    fn amps_reciprocal() {
-        assert_eq!(Amp::new(5.0).reciprocal(), Amp::new(1.0 / 5.0))
+    fn test_sub_assign() {
+        let mut a = Amp::new(1.0);
+        let b = Amp::new(2.0);
+        a -= b;
+        assert_eq!(a.value, -1.0);
     }
 }

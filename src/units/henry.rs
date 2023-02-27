@@ -1,5 +1,4 @@
-use std::fmt;
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
+use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign};
 
 #[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Henry {
@@ -9,10 +8,6 @@ pub struct Henry {
 impl Henry {
     pub fn new(value: f64) -> Self {
         Self { value }
-    }
-
-    pub fn reciprocal(&self) -> Self {
-        Self { value: 1.0 / self.value }
     }
 }
 
@@ -26,7 +21,7 @@ impl Mul<Henry> for Henry {
 
 impl MulAssign<Henry> for Henry {
     fn mul_assign(&mut self, other: Henry) {
-        *self = Henry::new(self.value * other.value);
+        self.value *= other.value;
     }
 }
 
@@ -40,7 +35,7 @@ impl Div<Henry> for Henry {
 
 impl DivAssign<Henry> for Henry {
     fn div_assign(&mut self, other: Henry) {
-        *self = Henry::new(self.value / other.value);
+        self.value /= other.value;
     }
 }
 
@@ -54,7 +49,7 @@ impl Add<Henry> for Henry {
 
 impl AddAssign<Henry> for Henry {
     fn add_assign(&mut self, other: Henry) {
-        *self = Henry::new(self.value + other.value);
+        self.value += other.value;
     }
 }
 
@@ -68,117 +63,78 @@ impl Sub<Henry> for Henry {
 
 impl SubAssign<Henry> for Henry {
     fn sub_assign(&mut self, other: Henry) {
-        *self = Henry::new(self.value - other.value);
+        self.value -= other.value;
     }
 }
 
-impl Rem<Henry> for Henry {
-    type Output = Henry;
-
-    fn rem(self, other: Henry) -> Henry {
-        Henry::new(self.value % other.value)
-    }
-}
-
-impl RemAssign<Henry> for Henry {
-    fn rem_assign(&mut self, other: Henry) {
-        *self = Henry::new(self.value % other.value);
-    }
-}
-
-impl fmt::Display for Henry {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:.} H", self.value)
-    }
-}
-
-#[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn mul() {
+    fn test_mul() {
         let a = Henry::new(1.0);
         let b = Henry::new(2.0);
-        let c = a * b;
-        assert_eq!(c.value, 2.0);
+        let c = Henry::new(2.0);
+        assert_eq!(a * b, c);
     }
 
     #[test]
-    fn mul_assign() {
+    fn test_mul_assign() {
         let mut a = Henry::new(1.0);
         let b = Henry::new(2.0);
+        let c = Henry::new(2.0);
         a *= b;
-        assert_eq!(a.value, 2.0);
+        assert_eq!(a, c);
     }
 
     #[test]
-    fn div() {
+    fn test_div() {
         let a = Henry::new(1.0);
         let b = Henry::new(2.0);
-        let c = a / b;
-        assert_eq!(c.value, 0.5);
+        let c = Henry::new(0.5);
+        assert_eq!(a / b, c);
     }
 
     #[test]
-    fn div_assign() {
+    fn test_div_assign() {
         let mut a = Henry::new(1.0);
         let b = Henry::new(2.0);
+        let c = Henry::new(0.5);
         a /= b;
-        assert_eq!(a.value, 0.5);
+        assert_eq!(a, c);
     }
 
     #[test]
-    fn add() {
+    fn test_add() {
         let a = Henry::new(1.0);
         let b = Henry::new(2.0);
-        let c = a + b;
-        assert_eq!(c.value, 3.0);
+        let c = Henry::new(3.0);
+        assert_eq!(a + b, c);
     }
 
     #[test]
-    fn add_assign() {
+    fn test_add_assign() {
         let mut a = Henry::new(1.0);
         let b = Henry::new(2.0);
+        let c = Henry::new(3.0);
         a += b;
-        assert_eq!(a.value, 3.0);
+        assert_eq!(a, c);
     }
 
     #[test]
-    fn sub() {
-        let a = Henry::new(1.0);
-        let b = Henry::new(2.0);
-        let c = a - b;
-        assert_eq!(c.value, -1.0);
+    fn test_sub() {
+        let a = Henry::new(2.0);
+        let b = Henry::new(1.0);
+        let c = Henry::new(1.0);
+        assert_eq!(a - b, c);
     }
 
     #[test]
-    fn sub_assign() {
-        let mut a = Henry::new(1.0);
-        let b = Henry::new(2.0);
+    fn test_sub_assign() {
+        let mut a = Henry::new(2.0);
+        let b = Henry::new(1.0);
+        let c = Henry::new(1.0);
         a -= b;
-        assert_eq!(a.value, -1.0);
-    }
-
-    #[test]
-    fn rem() {
-        let a = Henry::new(1.0);
-        let b = Henry::new(2.0);
-        let c = a % b;
-        assert_eq!(c.value, 1.0);
-    }
-
-    #[test]
-    fn rem_assign() {
-        let mut a = Henry::new(1.0);
-        let b = Henry::new(2.0);
-        a %= b;
-        assert_eq!(a.value, 1.0);
-    }
-
-    #[test]
-    fn display() {
-        let a = Henry::new(1.0);
-        assert_eq!(format!("{}", a), "1 H");
+        assert_eq!(c, a);
     }
 }

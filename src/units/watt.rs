@@ -1,30 +1,13 @@
-use std::fmt;
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
+use std::ops::{Mul, MulAssign, Div, DivAssign, Add, AddAssign, Sub, SubAssign};
 
 #[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Watt {
-    pub(crate) value: f64,
+    pub value: f64,
 }
 
 impl Watt {
     pub fn new(value: f64) -> Self {
         Self { value }
-    }
-
-    pub fn new_kilowatt(value: f64) -> Self {
-        Self { value: value * 1e3 }
-    }
-
-    pub fn new_megawatt(value: f64) -> Self {
-        Self { value: value * 1e6 }
-    }
-
-    pub fn new_gigawatt(value: f64) -> Self {
-        Self { value: value * 1e9 }
-    }
-
-    pub fn reciprocal(&self) -> Self {
-        Self { value: 1.0 / self.value }
     }
 }
 
@@ -38,7 +21,7 @@ impl Mul<Watt> for Watt {
 
 impl MulAssign<Watt> for Watt {
     fn mul_assign(&mut self, other: Watt) {
-        *self = Watt::new(self.value * other.value);
+        self.value *= other.value;
     }
 }
 
@@ -52,7 +35,7 @@ impl Div<Watt> for Watt {
 
 impl DivAssign<Watt> for Watt {
     fn div_assign(&mut self, other: Watt) {
-        *self = Watt::new(self.value / other.value);
+        self.value /= other.value;
     }
 }
 
@@ -66,7 +49,7 @@ impl Add<Watt> for Watt {
 
 impl AddAssign<Watt> for Watt {
     fn add_assign(&mut self, other: Watt) {
-        *self = Watt::new(self.value + other.value);
+        self.value += other.value;
     }
 }
 
@@ -80,124 +63,75 @@ impl Sub<Watt> for Watt {
 
 impl SubAssign<Watt> for Watt {
     fn sub_assign(&mut self, other: Watt) {
-        *self = Watt::new(self.value - other.value);
+        self.value -= other.value;
     }
 }
 
-impl Rem<Watt> for Watt {
-    type Output = Watt;
-
-    fn rem(self, other: Watt) -> Watt {
-        Watt::new(self.value % other.value)
-    }
-}
-
-impl RemAssign<Watt> for Watt {
-    fn rem_assign(&mut self, other: Watt) {
-        *self = Watt::new(self.value % other.value);
-    }
-}
-
-impl fmt::Display for Watt {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:.} W", self.value)
-    }
-}
-
-#[cfg(test)]
 mod tests {
+    use super::*;
 
     #[test]
-    fn watt_eq_watt() {
-        let watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        assert_eq!(watt1, watt2);
+    fn test_mul() {
+        let a = Watt::new(1.0);
+        let b = Watt::new(2.0);
+        let c = a * b;
+        assert_eq!(c.value, 2.0);
     }
 
     #[test]
-    fn watt_mul_watt() {
-        let watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        let watt3 = watt1 * watt2;
-        assert_eq!(watt3, super::Watt::new(1.0));
+    fn test_mul_assign() {
+        let mut a = Watt::new(1.0);
+        let b = Watt::new(2.0);
+        a *= b;
+        assert_eq!(a.value, 2.0);
     }
 
     #[test]
-    fn watt_mul_assign_watt() {
-        let mut watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        watt1 *= watt2;
-        assert_eq!(watt1, super::Watt::new(1.0));
+    fn test_div() {
+        let a = Watt::new(1.0);
+        let b = Watt::new(2.0);
+        let c = a / b;
+        assert_eq!(c.value, 0.5);
     }
 
     #[test]
-    fn watt_div_watt() {
-        let watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        let watt3 = watt1 / watt2;
-        assert_eq!(watt3, super::Watt::new(1.0));
+    fn test_div_assign() {
+        let mut a = Watt::new(1.0);
+        let b = Watt::new(2.0);
+        a /= b;
+        assert_eq!(a.value, 0.5);
     }
 
     #[test]
-    fn watt_div_assign_watt() {
-        let mut watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        watt1 /= watt2;
-        assert_eq!(watt1, super::Watt::new(1.0));
+    fn test_add() {
+        let a = Watt::new(1.0);
+        let b = Watt::new(2.0);
+        let c = a + b;
+        assert_eq!(c.value, 3.0);
     }
 
     #[test]
-    fn watt_add_watt() {
-        let watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        let watt3 = watt1 + watt2;
-        assert_eq!(watt3, super::Watt::new(2.0));
+    fn test_add_assign() {
+        let mut a = Watt::new(1.0);
+        let b = Watt::new(2.0);
+        a += b;
+        assert_eq!(a.value, 3.0);
     }
 
     #[test]
-    fn watt_add_assign_watt() {
-        let mut watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        watt1 += watt2;
-        assert_eq!(watt1, super::Watt::new(2.0));
+    fn test_sub() {
+        let a = Watt::new(1.0);
+        let b = Watt::new(2.0);
+        let c = a - b;
+        assert_eq!(c.value, -1.0);
     }
 
     #[test]
-    fn watt_sub_watt() {
-        let watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        let watt3 = watt1 - watt2;
-        assert_eq!(watt3, super::Watt::new(0.0));
-    }
-
-    #[test]
-    fn watt_sub_assign_watt() {
-        let mut watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        watt1 -= watt2;
-        assert_eq!(watt1, super::Watt::new(0.0));
-    }
-
-    #[test]
-    fn watt_rem_watt() {
-        let watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        let watt3 = watt1 % watt2;
-        assert_eq!(watt3, super::Watt::new(0.0));
-    }
-
-    #[test]
-    fn watt_rem_assign_watt() {
-        let mut watt1 = super::Watt::new(1.0);
-        let watt2 = super::Watt::new(1.0);
-        watt1 %= watt2;
-        assert_eq!(watt1, super::Watt::new(0.0));
-    }
-
-    #[test]
-    fn watt_display() {
-        let watt = super::Watt::new(1.0);
-        assert_eq!(format!("{}", watt), "1 W");
+    fn test_sub_assign() {
+        let mut a = Watt::new(1.0);
+        let b = Watt::new(2.0);
+        a -= b;
+        assert_eq!(a.value, -1.0);
     }
 
 }
