@@ -8,3 +8,4 @@ repository = "https://github.com/winnietthepooh/ElectricalMesurements"
 readme = "README.md"
 
 [dependencies]
+petgraph = "0.6.3"

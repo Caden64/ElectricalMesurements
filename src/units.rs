@@ -5,4 +5,4 @@ pub mod farad;
 pub mod hertz;
 pub mod henry;
 pub mod watt;
-mod ohms_law;
+pub mod ohms_law;
